@@ -1,6 +1,3 @@
-###### Your ID ######
-# Identifier removed for portfolio publication
-#####################
 
 import numpy as np
 
