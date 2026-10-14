@@ -175,7 +175,17 @@ def compute_pinv(X, y):
     ###########################################################################
     # TODO: Implement the pseudoinverse algorithm.                            #
     ###########################################################################
-    return np.linalg.inv(X.T @ X) @ X.T @ y
+    # SVD computes a stable Moore-Penrose solution even for rank-deficient X.
+    # Unlike np.linalg.inv(X.T @ X), it does not require full column rank.
+    X = np.asarray(X, dtype=float)
+    y = np.asarray(y, dtype=float)
+    u, singular_values, vt = np.linalg.svd(X, full_matrices=False)
+    if singular_values.size == 0:
+        return np.zeros((X.shape[1],) + y.shape[1:], dtype=float)
+    tolerance = np.finfo(float).eps * max(X.shape) * singular_values[0]
+    reciprocal = np.divide(1.0, singular_values, out=np.zeros_like(singular_values),
+                           where=singular_values > tolerance)
+    return (vt.T * reciprocal) @ (u.T @ y)
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
@@ -327,6 +337,11 @@ def knn_predict(X_train, y_train, X_test, k):
     Returns:
     - y_pred: Predicted values for the test data (n_test instances).
     """
+    X_train = np.asarray(X_train)
+    y_train = np.asarray(y_train)
+    X_test = np.asarray(X_test)
+    if not isinstance(k, (int, np.integer)) or not 1 <= k <= len(X_train):
+        raise ValueError("k must be an integer between 1 and the number of training samples")
     y_pred = []
     ###########################################################################
     # TODO: Implement K-nearest neighbors regression.                        #
