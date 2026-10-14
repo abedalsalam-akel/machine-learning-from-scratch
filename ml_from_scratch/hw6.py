@@ -13,9 +13,6 @@ def get_random_centroids(X, k, random_state=None):
     Notice we are flattening the image to a two dimensional array.
     Output: Randomly chosen centroids of shape `(k, 3)` as a numpy array.
     '''
-    ###########################################################################
-    # TODO: Implement the function.                                           #
-    ###########################################################################
     X = np.asarray(X)
 
     rng = np.random.RandomState(random_state)
@@ -26,9 +23,6 @@ def get_random_centroids(X, k, random_state=None):
     # make sure you return a numpy array
     return np.asarray(centroids)
 
-    ###########################################################################
-    #                             END OF YOUR CODE                            #
-    ###########################################################################
 
 
 def l_p_dist_from_centroids(X, centroids, p=2):
@@ -43,9 +37,6 @@ def l_p_dist_from_centroids(X, centroids, p=2):
     '''
     distances = None
     k = len(centroids)
-    ###########################################################################
-    # TODO: Implement the function.                                           #
-    ###########################################################################
     X = np.asarray(X, dtype=float)
     centroids = np.asarray(centroids, dtype=float)
 
@@ -58,9 +49,6 @@ def l_p_dist_from_centroids(X, centroids, p=2):
         axis=2
     ) ** (1.0 / p)
 
-    ###########################################################################
-    #                             END OF YOUR CODE                            #
-    ###########################################################################
     return distances
 
 
@@ -86,9 +74,6 @@ def kmeans(X, k, p, max_iter=100, epsilon=1e-8, random_state=None):
     cluster_assignments = None
     centroids = get_random_centroids(X, k, random_state=random_state)
     WCSS = None
-    ###########################################################################
-    # TODO: Implement the function.                                           #
-    ###########################################################################
     X = np.asarray(X, dtype=float)
     centroids = np.asarray(centroids, dtype=float)
 
@@ -152,9 +137,6 @@ def kmeans(X, k, p, max_iter=100, epsilon=1e-8, random_state=None):
     # WCSS = sum_i d_Lp(x_i, assigned centroid)^p
     WCSS = float(np.sum(assigned_distances ** p))
 
-    ###########################################################################
-    #                             END OF YOUR CODE                            #
-    ###########################################################################
     return centroids, cluster_assignments, WCSS
 
 
@@ -173,9 +155,6 @@ def norm_pdf(x, mu, sigma):
     """
     x = np.reshape(x, (-1, 1))
     prob = np.zeros_like(x, dtype=float)
-    ###########################################################################
-    # TODO: Implement the function.                                           #
-    ###########################################################################
     mu = np.asarray(mu, dtype=float)
     sigma = np.asarray(sigma, dtype=float)
 
@@ -190,9 +169,6 @@ def norm_pdf(x, mu, sigma):
 
     prob = np.asarray(prob, dtype=float)
 
-    ###########################################################################
-    #                             END OF YOUR CODE                            #
-    ###########################################################################
     return prob
 
 
@@ -210,9 +186,6 @@ def gmm_pdf(x, weights, mus, sigmas):
     """
     x = np.reshape(x, (-1, 1))
     prob = np.zeros_like(x, dtype=float)
-    ###########################################################################
-    # TODO: Implement the function.                                           #
-    ###########################################################################
     weights = np.asarray(weights, dtype=float).reshape(1, -1)
 
     component_densities = norm_pdf(
@@ -227,9 +200,6 @@ def gmm_pdf(x, weights, mus, sigmas):
         keepdims=True
     )
 
-    ###########################################################################
-    #                             END OF YOUR CODE                            #
-    ###########################################################################
     return prob
 
 
@@ -321,9 +291,6 @@ class GMM(object):
           2-D column array of shape `(n_examples, 1)`
         - verbose: if True, print initial parameters and the loss every 5 iterations
         """
-        ###########################################################################
-        # TODO: Implement the function.                                           #
-        ###########################################################################
         X = np.asarray(X, dtype=float).reshape(-1, 1)
 
         self.init_params(X)
@@ -356,9 +323,6 @@ class GMM(object):
 
             previous_loss = current_loss
 
-        ###########################################################################
-        #                             END OF YOUR CODE                            #
-        ###########################################################################
 
     def expectation(self, X):
         """
@@ -369,9 +333,6 @@ class GMM(object):
         - X: training data as a 1-D array of shape `(n_examples,)` or a
           2-D column array of shape `(n_examples, 1)`
         """
-        ###########################################################################
-        # TODO: Implement the function.                                           #
-        ###########################################################################
         X = np.asarray(X, dtype=float).reshape(-1, 1)
 
         weighted_densities = (
@@ -392,9 +353,6 @@ class GMM(object):
 
         self.responsibilities = weighted_densities / normalizers
 
-        ###########################################################################
-        #                             END OF YOUR CODE                            #
-        ###########################################################################
 
     def maximization(self, X):
         """
@@ -405,9 +363,6 @@ class GMM(object):
         - X: training data as a 1-D array of shape `(n_examples,)` or a
           2-D column array of shape `(n_examples, 1)`
         """
-        ###########################################################################
-        # TODO: Implement the function.                                           #
-        ###########################################################################
         X = np.asarray(X, dtype=float).reshape(-1, 1)
 
         n_examples = X.shape[0]
@@ -441,9 +396,6 @@ class GMM(object):
 
         self.sigmas = np.sqrt(variances)
 
-        ###########################################################################
-        #                             END OF YOUR CODE                            #
-        ###########################################################################
 
     def loss(self, X):
         """
@@ -459,9 +411,6 @@ class GMM(object):
         sigma_eps = 0.000000000001
         self.sigmas[self.sigmas < sigma_eps] = sigma_eps
         c = None
-        ###########################################################################
-        # TODO: Implement the function.                                           #
-        ###########################################################################
         probabilities = gmm_pdf(
             X,
             self.weights,
@@ -478,9 +427,6 @@ class GMM(object):
             -np.sum(np.log(probabilities))
         )
 
-        ###########################################################################
-        #                             END OF YOUR CODE                            #
-        ###########################################################################
         return c
 
     def pdf(self, x):
@@ -493,9 +439,6 @@ class GMM(object):
           as a numpy array of shape `(n, 1)`, where n is the number of values in x.
         """
         prob = None
-        ###########################################################################
-        # TODO: Implement the function.                                           #
-        ###########################################################################
         prob = gmm_pdf(
             x,
             self.weights,
@@ -503,9 +446,6 @@ class GMM(object):
             self.sigmas
         )
 
-        ###########################################################################
-        #                             END OF YOUR CODE                            #
-        ###########################################################################
         return prob
 
 
@@ -540,9 +480,6 @@ class NaiveBayesGMM(object):
         - y: class labels as a 1-D array of shape `(n_examples,)` or a
           2-D column array of shape `(n_examples, 1)`
         """
-        ###########################################################################
-        # TODO: Implement the function.                                           #
-        ###########################################################################
         X = np.asarray(X, dtype=float)
         y = np.asarray(y).reshape(-1)
 
@@ -577,9 +514,6 @@ class NaiveBayesGMM(object):
                     (class_label, feature_idx)
                 ] = gmm
 
-        ###########################################################################
-        #                             END OF YOUR CODE                            #
-        ###########################################################################
 
     def predict(self, X):
         """
@@ -594,9 +528,6 @@ class NaiveBayesGMM(object):
         gives the same argmax.
         """
         class_predictions = None
-        ###########################################################################
-        # TODO: Implement the function.                                           #
-        ###########################################################################
         X = np.asarray(X, dtype=float)
 
         n_examples, n_features = X.shape
@@ -639,7 +570,4 @@ class NaiveBayesGMM(object):
             predicted_indices
         ].reshape(-1, 1)
 
-        ###########################################################################
-        #                             END OF YOUR CODE                            #
-        ###########################################################################
         return class_predictions
