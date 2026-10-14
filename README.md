@@ -22,7 +22,13 @@ python -m pip install -r requirements.txt
 python -m pytest -q
 ```
 
-These are selected **smoke tests**, not comprehensive validations of every algorithm or numerical edge case. Advanced numerical routines need further testing before use on real datasets.
+The repository has **6 smoke tests and 8 additional deterministic numerical checks**, including rank-deficient least-squares, invalid KNN inputs, classification, and clustering. These 14 checks do not exhaustively validate each algorithm, dataset, or numerical edge case.
+
+## Numerical correctness notes
+
+- Linear regression uses an SVD-based Moore–Penrose solution that handles rank-deficient matrices without calling `np.linalg.pinv`.
+- KNN validates that `k` is an integer between one and the training-set size.
+- Implementations retain coursework-oriented method names and interfaces, including original spelling where used in the assignments.
 
 ## Attribution and publication
 
